@@ -79,11 +79,14 @@ describe("androidToolsInfo", () => {
 		it("should support android-17 - android-30", () => {
 			const min = 17;
 			const max = 30;
+			let cnt = 0;
 			const androidToolsInfo = getAndroidToolsInfo("6.5.0");
 			const supportedTargets = androidToolsInfo.getSupportedTargets("test");
 			for (let i = 0; i < supportedTargets.length; i++) {
 				assert.equal(supportedTargets[i], `android-${min+i}`);
+				cnt = min+i;
 			}
+			assert.equal(cnt, max);
 		});
 	});
 
