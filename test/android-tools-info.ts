@@ -79,9 +79,9 @@ describe("androidToolsInfo", () => {
 	});
 
 	describe("supportedAndroidSdks", () => {
-		it("should support android-17 - android-31", () => {
+		it("should support android-17 - android-32", () => {
 			const min = 17;
-			const max = 31;
+			const max = 32;
 			let cnt = 0;
 			const androidToolsInfo = getAndroidToolsInfo("6.5.0");
 			const supportedTargets = androidToolsInfo.getSupportedTargets("test");

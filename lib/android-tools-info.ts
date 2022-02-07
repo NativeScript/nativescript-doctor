@@ -28,6 +28,7 @@ export class AndroidToolsInfo implements NativeScriptDoctor.IAndroidToolsInfo {
 			"android-29",
 			"android-30",
 			"android-31",
+			"android-32",
 		];
 
 		if (runtimeVersion && semver.lt(semver.coerce(runtimeVersion), "6.1.0")) {
