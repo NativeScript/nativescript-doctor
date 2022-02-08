@@ -47,7 +47,8 @@ export class AndroidToolsInfo implements NativeScriptDoctor.IAndroidToolsInfo {
 
 	private toolsInfo: NativeScriptDoctor.IAndroidToolsInfoData;
 	public get androidHome(): string {
-		return process.env["ANDROID_HOME"];
+		// ANDROID_HOME env var is deprecated. See https://developer.android.com/studio/command-line/variables#envar
+		return process.env["ANDROID_SDK_ROOT"] ?? process.env["ANDROID_HOME"];
 	}
 	private pathToEmulatorExecutable: string;
 
@@ -96,7 +97,7 @@ export class AndroidToolsInfo implements NativeScriptDoctor.IAndroidToolsInfo {
 
 			let invalidBuildToolsAdditionalMsg = `Run \`\$ ${this.getPathToSdkManagementTool()}\` from your command-line to install required \`Android Build Tools\`.`;
 			if (!isAndroidHomeValid) {
-				invalidBuildToolsAdditionalMsg += ' In case you already have them installed, make sure `ANDROID_HOME` environment variable is set correctly.';
+				invalidBuildToolsAdditionalMsg += ' In case you already have them installed, make sure `ANDROID_SDK_ROOT` environment variable is set correctly.';
 			}
 
 			errors.push({
@@ -196,14 +197,14 @@ export class AndroidToolsInfo implements NativeScriptDoctor.IAndroidToolsInfo {
 
 		if (!this.androidHome || !this.fs.exists(this.androidHome)) {
 			errors.push({
-				warning: "The ANDROID_HOME environment variable is not set or it points to a non-existent directory. You will not be able to perform any build-related operations for Android.",
-				additionalInformation: "To be able to perform Android build-related operations, set the `ANDROID_HOME` variable to point to the root of your Android SDK installation directory.",
+				warning: "The ANDROID_SDK_ROOT environment variable is not set or it points to a non-existent directory. You will not be able to perform any build-related operations for Android.",
+				additionalInformation: "To be able to perform Android build-related operations, set the `ANDROID_SDK_ROOT` variable to point to the root of your Android SDK installation directory.",
 				platforms: [Constants.ANDROID_PLATFORM_NAME]
 			});
 		} else if (expectedDirectoriesInAndroidHome.map(dir => this.fs.exists(path.join(this.androidHome, dir))).length === 0) {
 			errors.push({
-				warning: "The ANDROID_HOME environment variable points to incorrect directory. You will not be able to perform any build-related operations for Android.",
-				additionalInformation: "To be able to perform Android build-related operations, set the `ANDROID_HOME` variable to point to the root of your Android SDK installation directory, " +
+				warning: "The ANDROID_SDK_ROOT environment variable points to incorrect directory. You will not be able to perform any build-related operations for Android.",
+				additionalInformation: "To be able to perform Android build-related operations, set the `ANDROID_SDK_ROOT` variable to point to the root of your Android SDK installation directory, " +
 					"where you will find `tools` and `platform-tools` directories.",
 				platforms: [Constants.ANDROID_PLATFORM_NAME]
 			});
@@ -281,13 +282,13 @@ export class AndroidToolsInfo implements NativeScriptDoctor.IAndroidToolsInfo {
 		const isAndroidHomeValid = this.isAndroidHomeValid();
 
 		if (isAndroidHomeValid) {
-			// In case ANDROID_HOME is correct, check if sdkmanager exists and if not it means the SDK has not been updated.
+			// In case ANDROID_SDK_ROOT is correct, check if sdkmanager exists and if not it means the SDK has not been updated.
 			// In this case user shoud use `android` from the command-line instead of sdkmanager.
 			const pathToSdkmanager = path.join(this.androidHome, "tools", "bin", sdkmanagerName);
 			const pathToAndroidExecutable = path.join(this.androidHome, "tools", "android");
 			const pathToExecutable = this.fs.exists(pathToSdkmanager) ? pathToSdkmanager : pathToAndroidExecutable;
 
-			sdkManagementToolPath = pathToExecutable.replace(this.androidHome, this.hostInfo.isWindows ? "%ANDROID_HOME%" : "$ANDROID_HOME");
+			sdkManagementToolPath = pathToExecutable.replace(this.androidHome, this.hostInfo.isWindows ? "%ANDROID_SDK_ROOT%" : "$ANDROID_SDK_ROOT");
 		}
 
 		return sdkManagementToolPath;
