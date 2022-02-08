@@ -1,3 +1,23 @@
+
+---
+
+## ⚠️Note
+
+This repository has been deprecated and archived. The source (and history) has been moved inside the NativeScript CLI repository in this Pull Request: https://github.com/NativeScript/nativescript-cli/pull/5621
+
+[The source is now managed in the `packages/doctor` folder in the nativescript-cli repository](https://github.com/NativeScript/nativescript-cli/tree/master/packages/doctor)
+
+ℹ️ _Note that the git history has been moved to the new location, however the merge commits are linking to the pull requests inside the CLI repo, as there's no easy way to reword them to link to this repository where they were originally created._
+
+---
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 # @nativescript/doctor
 Library that helps identifying if the environment can be used for development of {N} apps.
 
